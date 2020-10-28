@@ -56,6 +56,9 @@ class Coordinate:
         self.row = row
         self.column = column
 
+    def __eq__(self, other):
+        return self.row == other.row and self.column == other.column
+
     def move(self, direction):
         if direction == Direction.UP:
             if self.row == 0:

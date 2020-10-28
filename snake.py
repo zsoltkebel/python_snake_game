@@ -50,14 +50,10 @@ class Snake:
     def append(self):
         self.coordinates.append(self.coordinates[self.length() - 1].move_copy(Direction.DOWN))
 
-
 class Coordinate:
     def __init__(self, row, column):
         self.row = row
         self.column = column
-
-    def __eq__(self, other):
-        return self.row == other.row and self.column == other.column
 
     def move(self, direction):
         if direction == Direction.UP:
@@ -121,6 +117,12 @@ def new_random_coordinate(rows, columns, exclude=None):
 
     for coordinate in exclude:
         if x == coordinate.row and y == coordinate.column:
-            return new_random_coordinate(rows, columns, exclude)
+            return new_random_coordinate(rows,columns,exclude)
 
     return Coordinate(x, y)
+
+
+class BodyPart(Coordinate):
+    def __init__(self, row, column, direction):
+        super().__init__(row, column)
+        self.direction = direction

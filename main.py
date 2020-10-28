@@ -35,7 +35,9 @@ master = Tk()
 canvas_height = (ROWS+1) * 10
 canvas_width = (COLUMNS+1) * 10
 
-canvas = Canvas(master, width=canvas_width, height=canvas_height, bg="#000")
+canvas = Canvas(master,
+                width=canvas_width,
+                height=canvas_height, bg="#000")
 master.resizable(False, False)
 
 canvas.pack()
@@ -44,17 +46,13 @@ drawn_shapes = []
 
 snake_obj = Snake()
 food = new_random_coordinate(ROWS, COLUMNS, snake_obj.coordinates)
-score_count = canvas.create_text(10, 20, text=str(score), fill="white", tag="scorecount")
+score_count = canvas.create_text(10, 20, text=str(score), fill="white", tag="score_count")
 key_in_tick = None
-
+game_over = False
 
 # main logic =================
 def perform_tick():
-    global drawn_shapes
-    global key_in_tick
-    global food
-    global score
-    global score_count
+    global drawn_shapes, key_in_tick, food, score, score_count, canvas_height, canvas_width, game_over
 #    print("Tick")
 
     # main logic
@@ -65,25 +63,28 @@ def perform_tick():
 
     # move snake
     snake_obj.move()
-
     # check if food was eaten
     # only if head is at the coordinate of a food
     if snake_obj.coordinates[0].is_the_same(food):
         snake_obj.append()
-        score += 10
+        score+=1
         # spawn new food
         food = new_random_coordinate(ROWS, COLUMNS, snake_obj.coordinates)
-    if snake_obj.coordinates[0] in snake_obj.coordinates[1:]:
-        print("Oh, no")
+    for i in range(len(snake_obj.coordinates)-1):
+        if snake_obj.coordinates[0].is_the_same(snake_obj.coordinates[i+1]) and len(snake_obj.coordinates)>3:
+            canvas.create_text(canvas_width/2,canvas_height/2, text=f'GAME OVER\n your score is {score}', fill="white")
+            game_over = True
 
     # reset key in tick
     key_in_tick = None
 
     # draw everything
     drawn_shapes = draw_points(canvas, snake_obj.coordinates)
-    score_count = canvas.create_text(10, 10, text=str(score), fill="white", tag="scorecount")
+    score_count = canvas.create_text(20, 10, text=str(score), fill="white")
     drawn_shapes.append(draw_point(canvas, food, fill="#FF0000"))
-    canvas.after(200,perform_tick)
+
+    if not game_over:
+        canvas.after(200, perform_tick)
 
 
 perform_tick()

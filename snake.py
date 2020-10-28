@@ -50,6 +50,7 @@ class Snake:
     def append(self):
         self.coordinates.append(self.coordinates[self.length() - 1].move_copy(Direction.DOWN))
 
+
 class Coordinate:
     def __init__(self, row, column):
         self.row = row
@@ -120,9 +121,3 @@ def new_random_coordinate(rows, columns, exclude=None):
             return new_random_coordinate(rows, columns, exclude)
 
     return Coordinate(x, y)
-
-
-class BodyPart(Coordinate):
-    def __init__(self, row, column, direction):
-        super().__init__(row, column)
-        self.direction = direction

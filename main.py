@@ -29,11 +29,6 @@ def draw_points(canvas: Canvas, coordinates, fill="#00FF00"):
 
     return shapes
 
-def make_map_for_astar():
-    for i in range(ROWS):
-        for j in range(COLUMNS):
-
-
 
 master = Tk()
 
